@@ -49,17 +49,22 @@
     </a-scene>
 
     <script>
-        document.getElementById("startButton").addEventListener("click", function() {
+        window.onload = function () {
             let sceneEl = document.querySelector("#arScene");
-            
-            // Ensure MindAR is loaded
-            if (sceneEl.components["mindar-image"]) {
-                sceneEl.components["mindar-image"].start();
-                this.style.display = "none"; // Hide button after starting AR
-            } else {
-                alert("MindAR not loaded! Refresh and try again.");
-            }
-        });
+            let startButton = document.getElementById("startButton");
+
+            startButton.addEventListener("click", function() {
+                if (sceneEl.hasLoaded) {
+                    sceneEl.components["mindar-image"].start();
+                    startButton.style.display = "none"; // Hide button after starting AR
+                } else {
+                    sceneEl.addEventListener("loaded", () => {
+                        sceneEl.components["mindar-image"].start();
+                        startButton.style.display = "none";
+                    });
+                }
+            });
+        };
     </script>
 </body>
 </html>
