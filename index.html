@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code AR Viewer</title>
+
+    <!-- Import A-Frame and MindAR -->
+    <script src="https://cdn.jsdelivr.net/npm/aframe@1.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.0/dist/mindar-aframe.min.js"></script>
+
+    <style>
+        body { margin: 0; overflow: hidden; }
+        #startButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background: #1CAAD9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button id="startButton">Start AR</button>
+
+    <a-scene mindar-image="imageTargetSrc: targets.mind; autoStart: false;"
+             vr-mode-ui="enabled: false" 
+             embedded 
+             arjs>
+        
+        <!-- Camera for AR -->
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <!-- QR Code Marker -->
+        <a-entity mindar-image-target="targetIndex: 0">
+            <a-gltf-model src="raptor_blue.glb" 
+                          scale="0.5 0.5 0.5" 
+                          position="0 0 0">
+            </a-gltf-model>
+        </a-entity>
+
+    </a-scene>
+
+    <script>
+        document.getElementById("startButton").addEventListener("click", function() {
+            document.querySelector("a-scene").components["mindar-image"].start();
+            this.style.display = "none"; // Hide the button after starting AR
+        });
+    </script>
+</body>
+</html>
