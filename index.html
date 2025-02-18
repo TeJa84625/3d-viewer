@@ -29,7 +29,8 @@
 <body>
     <button id="startButton">Start AR</button>
 
-    <a-scene mindar-image="imageTargetSrc: targets.mind; autoStart: false;"
+    <a-scene id="arScene" 
+             mindar-image="imageTargetSrc: ./targets.mind; autoStart: false;" 
              vr-mode-ui="enabled: false" 
              embedded 
              arjs>
@@ -39,7 +40,7 @@
 
         <!-- QR Code Marker -->
         <a-entity mindar-image-target="targetIndex: 0">
-            <a-gltf-model src="raptor_blue.glb" 
+            <a-gltf-model src="./raptor_blue.glb" 
                           scale="0.5 0.5 0.5" 
                           position="0 0 0">
             </a-gltf-model>
@@ -49,8 +50,15 @@
 
     <script>
         document.getElementById("startButton").addEventListener("click", function() {
-            document.querySelector("a-scene").components["mindar-image"].start();
-            this.style.display = "none"; // Hide the button after starting AR
+            let sceneEl = document.querySelector("#arScene");
+            
+            // Ensure MindAR is loaded
+            if (sceneEl.components["mindar-image"]) {
+                sceneEl.components["mindar-image"].start();
+                this.style.display = "none"; // Hide button after starting AR
+            } else {
+                alert("MindAR not loaded! Refresh and try again.");
+            }
         });
     </script>
 </body>
